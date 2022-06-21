@@ -1,0 +1,8 @@
+#!/bin/bash
+MY_PATH=$(dirname "$0")
+MY_PATH=$(cd "$MY_PATH" && pwd)
+
+# just a wrapper
+naredba="$MY_PATH/telegramBotNotify "
+
+$naredba "$@" > /dev/null 2>&1

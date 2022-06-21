@@ -1,0 +1,15 @@
+#!/bin/bash
+MY_PATH=$(dirname "$0")
+MY_PATH=$(cd "$MY_PATH" && pwd)
+
+# just a wrapper
+naredba="$MY_PATH/telegramBotNotify "
+
+date=$(date +"%d.%m.%Y")
+timee=$(date +'%R:%S')
+stamp=$(date +'%s')
+
+$naredba "\\[ RPi ] System updated, kernel: $(uname -r)"
+
+
+

@@ -1,0 +1,21 @@
+#!/bin/bash
+MY_PATH=$(dirname "$0")
+MY_PATH=$(cd "$MY_PATH" && pwd)
+
+ipsCacheFile="/tmp/ips"
+
+ipsOld=$(cat $ipsCacheFile)
+ips=$(hostname -I)
+
+if [ "$ipsOld" == "$ips" ]; then
+    exit 0;
+else
+	for ip in "${ips[@]}"
+	do
+    	mreze+="${ip}"$'\n'
+	done
+
+	$MY_PATH/notifyMsg "\\[ RPi ] Detected new network interface: $mreze"
+fi
+
+echo "$ips" > "$ipsCacheFile"

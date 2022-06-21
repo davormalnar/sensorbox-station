@@ -1,0 +1,6 @@
+#!/bin/bash
+MY_PATH=$(dirname "$0")
+MY_PATH=$(cd "$MY_PATH" && pwd)
+
+tail -n 1 -f /var/log/syslog | while read line; do $MY_PATH/notifyMsg "$line"; done
+

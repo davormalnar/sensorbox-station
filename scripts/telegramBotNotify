@@ -1,0 +1,17 @@
+#!/bin/bash
+MY_PATH=$(dirname "$0")
+MY_PATH=$(cd "$MY_PATH" && pwd)
+
+CONFIG=$MY_PATH/../config.yaml
+source $MY_PATH/parse_yaml
+
+eval $(parse_yaml $CONFIG)
+
+TOKEN=$telegram_token
+CHAT_ID=$telegram_chatId
+
+MESSAGE="$@"
+URL="https://api.telegram.org/bot$TOKEN/sendMessage"
+
+curl -s -X POST $URL -d chat_id=$CHAT_ID -d parse_mode="Markdown" -d text="$MESSAGE"
+

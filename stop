@@ -1,0 +1,25 @@
+#!/bin/bash
+MY_PATH=$(dirname "$0")
+MY_PATH=$(cd "$MY_PATH" && pwd) 
+
+# lets check if config exists
+if [ ! -f $MY_PATH/config.yaml ]; then
+    echo "Configuration not found! Please create config.yaml from config.yaml.template and try again."
+    exit 1
+fi
+
+# lets load yaml parser function (fn: parse_yaml)
+source $MY_PATH/scripts/parse_yaml
+eval $(parse_yaml $MY_PATH/config.yaml)
+
+if [ $sensors_measureAqi = true ]; then
+  screen -S aqi -X quit
+fi
+
+if [ $sensors_measureTemperature = true ]; then
+  screen -S temp -X quit
+fi
+
+if [ $sensors_useCamera = true ]; then
+  screen -S camera -X quit
+fi

@@ -1,0 +1,42 @@
+#!/bin/bash
+MY_PATH=$(dirname "$0")
+MY_PATH=$(cd "$MY_PATH" && pwd) 
+
+# lets check if config exists
+if [ ! -f $MY_PATH/config.yaml ]; then
+    echo "Configuration not found! Please create config.yaml from config.yaml.template and try again."
+    exit 1
+fi
+
+# lets load yaml parser function (fn: parse_yaml)
+source $MY_PATH/scripts/parse_yaml
+
+eval $(parse_yaml $MY_PATH/config.yaml)
+
+if [ $sensors_measureAqi = true ]; then
+  if ! screen -list | grep -q "aqi"; then
+    echo "starting AQI sensor... screen: aqi"
+    screen -S aqi -d -m $MY_PATH/sensors/aqi.py
+  else
+    echo "AQI sensor process already running..."
+  fi
+fi
+
+if [ $sensors_measureTemperature = true ]; then
+  if ! screen -list | grep -q "temp"; then
+    echo "starting Temp sensor... screen: temp"
+    screen -S temp -d -m $MY_PATH/sensors/temp.py
+  else
+    echo "Temp sensor process already running..."
+  fi
+fi
+
+if [ $sensors_useCamera = true ]; then
+  if ! screen -list | grep -q "camera"; then
+    echo "starting camera live stream... screen: camera"
+    screen -S camera -d -m $MY_PATH/sensors/camera.sh
+  else
+    echo "Camera live stream process already running..."
+  fi
+fi
+

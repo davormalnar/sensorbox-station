@@ -1,0 +1,34 @@
+# Sensorbox station config
+# v1.0
+
+
+---
+sensors:
+  measureTemperature: true
+  measureAqi: true
+  useCamera: false
+notifications:
+  notifyIpChange: true
+  notifyDailyStats: true
+  weeklyRPiUpdate: true
+  warnBadAirQuality: true
+  warnRPiOverheating: true
+station:
+  city: 'Varaždin'
+  elevation: 173
+  lat: 46.312
+  lon: 16.361
+database:
+  username: 'sensorbox_<...CHANGE THIS...>'
+  password: '<...CHANGE THIS...>'
+  host: '<...CHANGE THIS...>'
+  port: '27017'
+  alias: '<...CHANGE THIS...>'
+camera:
+  rtspUrl: ''
+  streamUrl: ''
+  streamKey: ''
+telegram:
+  token: ''
+  chatId: ''
+

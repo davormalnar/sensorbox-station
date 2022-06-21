@@ -1,0 +1,19 @@
+#!/bin/bash
+MY_PATH=$(dirname "$0")
+MY_PATH=$(cd "$MY_PATH" && pwd)
+
+CONFIG=$MY_PATH/../config.yaml
+source $MY_PATH/parse_yaml
+
+eval $(parse_yaml $CONFIG)
+
+TOKEN=$telegram_token
+CHAT_ID=$telegram_chatId
+
+MESSAGE="$@"
+URL="https://api.telegram.org/bot$TOKEN/sendPhoto"
+
+IMAGE="$1"
+DATE=$(date -r ${IMAGE} "%Y-%m-%d +%H:%M:%S")
+
+curl -s -v -X POST $URL -F chat_id="$CHAT_ID" -F photo="@$IMAGE" -F caption="$DATE"

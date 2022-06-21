@@ -1,0 +1,6 @@
+#!/bin/bash
+MY_PATH=$(dirname "$0")
+MY_PATH=$(cd "$MY_PATH" && pwd)
+
+PATH=/sbin:/bin:/usr/bin
+apt update && apt upgrade -y && apt autoclean && $MY_PATH/notifyUpdate

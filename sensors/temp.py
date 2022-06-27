@@ -211,8 +211,10 @@ def notifyWarning(lastWarning, temp):
     difference = currentTime - lastWarning
 
     if difference.total_seconds() > NOTIFY_PERIOD_SECONDS:
-        data['rpiTemp'] = temp
-        data['stationName'] = config['name']
+        data = {
+          'rpiTemp': temp,
+          'stationName': config['name']
+        }
         warnRPiTemp.notify(data)
         return currentTime
     else:

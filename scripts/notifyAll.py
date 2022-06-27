@@ -67,7 +67,7 @@ def color(aqiVal):
 
 if __name__=="__main__":
 
-  config = utils.loadConfig(CONFIG_PATH)
+  config = loadConfig(CONFIG_PATH)
   aqi = parseJsonAqi()
   temp = parseJsonTemp()
 

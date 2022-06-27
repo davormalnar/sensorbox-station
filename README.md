@@ -35,6 +35,7 @@ for example: `screen -r temp`
 
 ## To-do: ###
 
+* Start/Restart/Stop scripts don't produce an error if/when they fail
 * Remove hardcoded directory paths
 * AQI PM2.5 and PM10 calculation can be out of bounds (for deadly levels of pollution)
 

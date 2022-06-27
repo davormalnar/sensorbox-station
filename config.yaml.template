@@ -3,6 +3,7 @@
 
 
 ---
+name: '<...CHANGE THIS...>'
 sensors:
   measureTemperature: true
   measureAqi: true

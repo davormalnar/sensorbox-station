@@ -12,11 +12,14 @@ def color(aqiVal):
     return "Unhealthy (!!)"
   elif aqiVal < 301:
     return "Hazardous"
+  elif aqiVal > 401:
+    return "Extremely hazardous"
 
   return ""
 
 def notify(aqi):
   msg = "============== WARNING ============== \n" + \
+        "-> station: " + str(aqi['stationName']) + " \n" + \
         str(color(aqi['aqiPM25'])) + " - AQI (PM 2.5): *" + str(aqi['aqiPM25']) + "* (" + str(aqi['pm25']) + " ug/m3) \n" + \
         str(color(aqi['aqiPM10'])) + " - AQI (PM 10): *" + str(aqi['aqiPM10']) + "* (" + str(aqi['pm10']) + " ug/m3) \n" + \
         "========== " + str(aqi['created']) + " ========== \n"

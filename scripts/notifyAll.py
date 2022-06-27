@@ -1,9 +1,19 @@
 #!/usr/bin/python3
-import time, json, os, sys
+import time, json, os, sys, yaml
 from datetime import date
 from aqiCalc import *
 
 MY_PATH = os.path.dirname(os.path.realpath(__file__))
+
+# path to sensorbox-station folder
+STATION_PATH = "/home/pi/sensorbox-station/"
+
+# sensorbox config (default: STATION_PATH + "config.yaml")
+CONFIG_PATH = STATION_PATH + "config.yaml"
+
+def loadConfig(path):
+    with open(path, "r") as ymlfile:
+        return yaml.safe_load(ymlfile)
 
 def parseJsonAqi():
   # path to JSON file
@@ -57,10 +67,11 @@ def color(aqiVal):
 
 if __name__=="__main__":
 
+  config = utils.loadConfig(CONFIG_PATH)
   aqi = parseJsonAqi()
   temp = parseJsonTemp()
 
-  msg = "*" + str(aqi['created']) + "* \n" + \
+  msg = "*" + config['name'] + ' - ' + str(aqi['created']) + "* \n" + \
         "-- \n" + \
         str(color(aqi['aqiPM25'])) + " - AQI (PM 2.5): *" + str(aqi['aqiPM25']) + "* (" + str(aqi['pm25']) + " ug/m3) \n" + \
         str(color(aqi['aqiPM10'])) + " - AQI (PM 10): *" + str(aqi['aqiPM10']) + "* (" + str(aqi['pm10']) + " ug/m3) \n" + \

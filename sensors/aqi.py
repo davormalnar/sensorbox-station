@@ -182,6 +182,7 @@ def notifyWarning(lastWarning, data):
     difference = currentTime - lastWarning
 
     if difference.total_seconds() > NOTIFY_PERIOD_SECONDS:
+        data['stationName'] = config['name']
         warnAqi.notify(data)
         return currentTime
     else:

@@ -53,15 +53,15 @@ def parseJsonTemp():
 
 def color(aqiVal):
   if aqiVal < 51:
-    return "Good"
+    return "✅ Good"
   elif aqiVal < 101:
-    return "Moderate"
+    return "⚠ Moderate"
   elif aqiVal < 151:
-    return "Unhealthy (!)"
+    return "❗Unhealthy❗"
   elif aqiVal < 201:
-    return "Unhealthy (!!)"
-  elif aqiVal < 301:
-    return "Hazardous"
+    return "‼Unhealthy‼ "
+  else:
+    return "‼💀 Hazardous 💀‼"
 
   return ""
 

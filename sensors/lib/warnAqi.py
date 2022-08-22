@@ -1,41 +1,62 @@
 #!/usr/bin/python3
 import os
 
+def severity(level):
+  if level == "ERROR":
+      return "❌ Error"
+  elif level == "GOOD":
+      return "✅ Good"
+  elif level == "MODERATE":
+      return "⚠️ Moderate"
+  elif level == "UNHEALTHY_1":
+      return "❗Unhealthy❗"
+  elif level == "UNHEALTHY_2":
+      return "‼️Unhealthy‼️"
+  elif level == "VERY_UNHEALTHY":
+      return "‼☣‼️ Very unhealthy"
+  elif level == "HAZARDOUS":
+      return "‼💀‼ Hazardous"
+  elif level == "EXTREMELY_HAZARDOUS":
+      return "‼☠️️‼ Extremely hazardous"
+  else:
+      return "Something's wrong :("
+
+
 def severity25(pmVal):
   if pmVal == 0:
-    return "Error"
+    return severity("ERROR")
   elif pmVal < 13:
-    return "Good"
+    return severity("GOOD")
   elif pmVal < 36:
-    return "Moderate"
+    return severity("MODERATE")
   elif pmVal < 56:
-    return "Unhealthy (!)"
+    return severity("UNHEALTHY_1")
   elif pmVal < 150:
-    return "Unhealthy (!!)"
+    return severity("UNHEALTHY_2")
   elif pmVal < 250:
-    return "Very unhealthy (!!!)"
+    return severity("VERY_UNHEALTHY")
   elif pmVal <= 500:
-    return "Hazardous"
+    return severity("HAZARDOUS")
   elif pmVal > 500:
-    return "Extremely hazardous"
+    return severity("EXTREMELY_HAZARDOUS")
 
 def severity10(pmVal):
   if pmVal == 0:
-    return "Error"
+    return severity("ERROR")
   elif pmVal < 55:
-    return "Good"
+    return severity("GOOD")
   elif pmVal < 155:
-    return "Moderate"
+    return severity("MODERATE")
   elif pmVal < 255:
-    return "Unhealthy (!)"
+    return severity("UNHEALTHY_1")
   elif pmVal < 355:
-    return "Unhealthy (!!)"
+    return severity("UNHEALTHY_2")
   elif pmVal < 425:
-    return "Very unhealthy (!!!)"
+    return severity("VERY_UNHEALTHY")
   elif pmVal <= 604:
-    return "Hazardous"
+    return severity("HAZARDOUS")
   elif pmVal > 604:
-    return "Extremely hazardous"
+    return severity("EXTREMELY_HAZARDOUS")
 
 def notify(aqi):
   msg = "==================== WARNING ==================== \n" + \
@@ -46,4 +67,17 @@ def notify(aqi):
 
   os.system('/home/pi/sensorbox-station/scripts/telegramBotNotify "' + msg + '"')
 
+
+## for testing purposes only 
+#if __name__=="__main__":
+#  aqi = {
+#    'pm25': 5,
+#    'pm10': 42,
+#    'aqiPM25': 100,
+#    'aqiPM10': 100,
+#    'created': '2022-08-22',
+#    'stationName': 'Testna stanica Varaždin'
+#  }
+#
+#  notify(aqi)
 

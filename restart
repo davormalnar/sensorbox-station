@@ -65,9 +65,17 @@ function checkAllServices() {
 }
 
 function restartAllServices() {
-  aqi
-  temp
-  camera
+    if ([ $sensors_measureAqi = true ]); then
+      aqi
+    fi
+
+    if ([ $sensors_measureTemperature = true ]); then
+      temp
+    fi
+
+    if ([ $sensors_useCamera = true ]); then
+      camera
+    fi
 }
 
 if [ $# -eq 0 ]; then

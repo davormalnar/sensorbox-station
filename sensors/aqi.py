@@ -148,8 +148,11 @@ def sendPayload(data):
     # auth token
     token = jwt.encode(jwtPayload, secret, algorithm="HS512")
 
+    if not isinstance(token, str):
+        token = token.decode("utf-8")
+
     # http headers
-    headers = {'x-tenant': tenant, 'authorization': 'Bearer ' + token.decode('UTF-8')}
+    headers = {'x-tenant': tenant, 'authorization': 'Bearer ' + token}
 
     try:
         r = requests.post(url=endpoint + '/aqi/stationPayload', headers=headers, data=data)

@@ -160,7 +160,7 @@ def readBME280All(addr=DEVICE):
     # Refine humidity
     humidity = t_fine - 76800.0
     humidity = (hum_raw - (dig_H4 * 64.0 + dig_H5 / 16384.0 * humidity)) * (
-                dig_H2 / 65536.0 * (1.0 + dig_H6 / 67108864.0 * humidity * (1.0 + dig_H3 / 67108864.0 * humidity)))
+            dig_H2 / 65536.0 * (1.0 + dig_H6 / 67108864.0 * humidity * (1.0 + dig_H3 / 67108864.0 * humidity)))
     humidity = humidity * (1.0 - dig_H1 * humidity / 524288.0)
     if humidity > 100:
         humidity = 100
@@ -181,8 +181,11 @@ def sendPayload(data):
     # auth token
     token = jwt.encode(jwtPayload, secret, algorithm="HS512")
 
+    if not isinstance(token, str):
+        token = token.decode("utf-8")
+
     # http headers
-    headers = {'x-tenant': tenant, 'authorization': 'Bearer ' + token.decode('UTF-8')}
+    headers = {'x-tenant': tenant, 'authorization': 'Bearer ' + token}
 
     try:
         r = requests.post(url=endpoint + '/temp/stationPayload', headers=headers, data=data)

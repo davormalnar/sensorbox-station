@@ -182,7 +182,7 @@ def sendPayload(data):
     token = jwt.encode(jwtPayload, secret, algorithm="HS512")
 
     # http headers
-    headers = {'x-tenant': tenant, 'authorization': 'Bearer ' + token}
+    headers = {'x-tenant': tenant, 'authorization': 'Bearer ' + token.decode('UTF-8')}
 
     try:
         r = requests.post(url=endpoint + '/temp/stationPayload', headers=headers, data=data)

@@ -75,16 +75,16 @@ def process_data(d):
     pm25 = r[0] / 10.0
     pm10 = r[1] / 10.0
     checksum = sum(d[2:8]) % 256
-    print("PM 2.5: {} μg/m^3  PM 10: {} μg/m^3 CRC={}".format(pm25, pm10,
-                                                              "OK" if (checksum == r[2] and r[3] == 0xab) else "NOK"))
+    print("PM 2.5: {} μg/m^3  PM 10: {} μg/m^3 CRC={}"
+          .format(pm25, pm10, "OK" if (checksum == r[2] and r[3] == 0xab) else "NOK"))
     return [pm25, pm10]
 
 
 def process_version(d):
     r = struct.unpack('<BBBHBB', d[3:])
     checksum = sum(d[2:8]) % 256
-    print("Y: {}, M: {}, D: {}, ID: {}, CRC={}".format(r[0], r[1], r[2], hex(r[3]),
-                                                       "OK" if (checksum == r[4] and r[5] == 0xab) else "NOK"))
+    print("Y: {}, M: {}, D: {}, ID: {}, CRC={}"
+          .format(r[0], r[1], r[2], hex(r[3]), "OK" if (checksum == r[4] and r[5] == 0xab) else "NOK"))
 
 
 def read_response():
@@ -149,7 +149,7 @@ def sendPayload(data):
     token = jwt.encode(jwtPayload, secret, algorithm="HS512")
 
     # http headers
-    headers = {'x-tenant': tenant, 'authorization': 'Bearer ' + token}
+    headers = {'x-tenant': tenant, 'authorization': 'Bearer ' + token.decode('UTF-8')}
 
     try:
         r = requests.post(url=endpoint + '/aqi/stationPayload', headers=headers, data=data)
@@ -159,6 +159,7 @@ def sendPayload(data):
 
     except Exception as e:
         print("Http POST error occured", e)
+
 
 def saveToJSON(jsonRow):
     TODAY_DATE_STAMP = date.today().strftime("%Y-%m-%d")

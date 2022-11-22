@@ -19,12 +19,10 @@ station:
   elevation: 173
   lat: 46.312
   lon: 16.361
-database:
-  username: 'sensorbox_<...CHANGE THIS...>'
-  password: '<...CHANGE THIS...>'
+api:
+  clientId: '<...CHANGE THIS...>'
+  key: '<...CHANGE THIS...>'
   host: '<...CHANGE THIS...>'
-  port: '27017'
-  alias: '<...CHANGE THIS...>'
 camera:
   rtspUrl: ''
   streamUrl: ''

@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-import smbus, yaml, time, os, json, datetime
-from datetime import date, datetime, timedelta
-from pymongo import MongoClient
+import smbus, yaml, time, os, json, datetime, jwt, requests
+from datetime import date, datetime, timedelta, timezone
 from ctypes import c_short
 from ctypes import c_byte
 from ctypes import c_ubyte
@@ -164,25 +163,28 @@ def readBME280All(addr=DEVICE):
   return temperature/100.0,pressure/100.0,humidity
 
 
-def saveToDB(data):
-    db_user = config['database']['username']
-    db_pass = config['database']['password']
-    db_host = config['database']['host']
-    db_port = config['database']['port']
-    db_alias = "sensorbox_"+config['database']['alias']
+def sendPayload(data):
+    tenant = config['api']['clientId']
+    secret = config['api']['key']
+    endpoint = config['api']['host']
 
-    conn_str = f'mongodb://{db_user}:{db_pass}@{db_host}:{db_port}/?authSource=admin&readPreference=primary&ssl=false'
+    # custom jwt signed with api key
+    jwtPayload = {'tenant': tenant, 'exp': datetime.now(tz=timezone.utc) + timedelta(seconds=50)}
+
+    # auth token
+    token = jwt.encode(jwtPayload, secret, algorithm="HS512")
+
+    # http headers
+    headers = {'x-tenant': tenant, 'authorization': 'Bearer ' + token}
 
     try:
-        client = MongoClient(conn_str, serverSelectionTimeoutMS=5000)
+        r = requests.post(url=endpoint + '/temp/stationPayload', headers=headers, data=data)
 
-        db = client[db_alias]
-        collection = db['temperature']
-        collection.insert_one(data)
-        client.close()
+        if r.status_code != 201:
+            print('Error: server return code', r.status_code)
+
     except Exception as e:
-        print("Mongo error occured", e)
-
+        print("Http POST error occured", e)
 
 def saveToJSON(jsonRow):
     TODAY_DATE_STAMP = date.today().strftime("%Y-%m-%d")
@@ -278,8 +280,8 @@ if __name__ == "__main__":
       # save locally as well
       saveToJSON(payload)
 
-      # save to db
-      saveToDB(payload)
+      # send payload to a server
+      sendPayload(payload)
 
       if (warnRPiOverheating == True and int(rpiTemp) > NOTIFY_WARNING_TEMP_THRESHOLD): #RPi temp above 75C
         print("\nRPi overheating!!")
